@@ -9,8 +9,8 @@ from cann_tables.models import Team, League
 
 
 def choose_tables():
-    """Use this to create your own list of leagues.
-    You way want to edit wanted.json manually to correct names"""
+    """Creates wanted.json with tables that the user selects
+    Note that some tables are unsupported (e.g. World Cup groups)"""
     url = "http://www.bbc.co.uk/sport/football/tables"
     page = requests.get(url)
     tree = html.fromstring(page.text)
@@ -42,6 +42,7 @@ def add_from_json():
 
 
 def scrape_table(league):
+    """Updates database with latest table data"""
     url = "http://www.bbc.co.uk/sport/football/tables/partial/{}".format(league.id)
     page = requests.get(url)
     tree = html.fromstring(page.text)
@@ -93,6 +94,7 @@ def scrape_table(league):
 
 
 def scrape_all():
+    """Updates data for every table"""
     leagues = League.query.all()
 
     for league in leagues:
@@ -100,7 +102,7 @@ def scrape_all():
 
 
 def setup():
-    """Run first"""
+    """First time setup"""
     choose_tables()
     add_from_json()
 
