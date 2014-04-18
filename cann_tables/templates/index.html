@@ -5,12 +5,41 @@
 {% block content %}
 <div class="container">
     <a href="/">
-        <h1>Cann tables</h1>
+        <h1>Cann Football Tables</h1>
     </a>
-    <table class="table table-hover table-condensed table-striped table-bordered">
-        <tbody>
-
-        </tbody>
-    </table>
+    {% for league in leagues %}
+    {% if loop.index0 % 4 == 0 %}
+    <div class="row">
+    {% endif %}
+    <div class="col-sm-3">
+        <h4>{{ league.name }}</h4>
+        <table class="table table-hover table-condensed table-striped table-bordered">
+            <thead>
+                <tr>
+                    <td>Points</td>
+                    <td>Position Teams</td>
+                </tr>
+            </thead>
+            <tbody>
+                {% for points, teams in data[league].items()|sort(reverse=True) %}
+                <tr>
+                    <td>{{ points }}</td>
+                    <td>
+                        {% for team in teams %}
+                        {{team.position}} {{ team.name }}
+                        {%- if not loop.last %},{% endif %}
+                        {% endfor %}
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+        <h6>Maximum points: {{ league.max_points }}</h6>
+        <h6>Last updated: {{ league.last_updated }}</h6>
+    </div>
+    {% if loop.index % 4 == 0 or loop.last %}
+    </div>
+    {% endif %}
+    {% endfor %}
 </div>
 {% endblock %}
