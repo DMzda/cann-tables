@@ -23,8 +23,9 @@ class League(db.Model):
     name = db.Column(db.String)
     last_updated = db.Column(db.DateTime)
     max_points = db.Column(db.Integer)
+    max_played = db.Column(db.Integer)
 
-    teams = league = db.relationship("Team", order_by="Team.position", backref=db.backref("league"))
+    teams = db.relationship("Team", order_by="Team.position", backref=db.backref("league"))
 
     def __repr__(self):
         return "<League(id={}, name={}>".format(self.id, self.name)

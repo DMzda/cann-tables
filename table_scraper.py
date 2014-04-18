@@ -64,13 +64,17 @@ def scrape_table(league):
     league.last_updated = now
     league.max_points = max_points
 
-    db.session.add(league)
+
+    max_played = 0
 
     for index, _ in enumerate(results["position"]):
         name = results["name"][index]
         points = int(results["points"][index])
         position = int(results["position"][index])
         played = int(results["played"][index])
+
+        if played > max_played:
+            max_played = played
 
         t = Team.query.filter(Team.league_id == league.id).filter(Team.name == name).first()
         if t:
@@ -82,7 +86,10 @@ def scrape_table(league):
 
         db.session.add(t)
 
+    league.max_played = max_played
+    db.session.add(league)
     db.session.commit()
+    print("{} completed".format(league.name))
 
 
 def scrape_all():

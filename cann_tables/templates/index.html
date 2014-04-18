@@ -17,7 +17,7 @@
             <thead>
                 <tr>
                     <td>Points</td>
-                    <td>Position Teams</td>
+                    <td>Teams (Games in hand)</td>
                 </tr>
             </thead>
             <tbody>
@@ -26,7 +26,10 @@
                     <td>{{ points }}</td>
                     <td>
                         {% for team in teams %}
-                        {{team.position}} {{ team.name }}
+                        {{ team.position }} - {{ team.name }}
+                        {%- if team.played < league.max_played %}
+                        ({{ league.max_played - team.played }})
+                        {%- endif -%}
                         {%- if not loop.last %},{% endif %}
                         {% endfor %}
                     </td>
