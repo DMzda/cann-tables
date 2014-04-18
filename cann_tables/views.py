@@ -1,11 +1,11 @@
-from cann_tables import app, db, models
+from cann_tables import app, models
 from flask import render_template
 
 import datetime
 
 
 @app.route("/")
-@app.route("/index")
+@app.route("/index/")
 def index():
     leagues = models.League.query.all()
     data = {}

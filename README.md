@@ -20,6 +20,10 @@ A small flask application that displays football tables in a Cann format.
 		python manage.py scrape
 		python manage.py runserver
 
+- Run the `freeze` command to produce the .html files:
+
+		python manage.py freeze
+
 You can also run the following command to get an interactive shell with `app`, `db` and the `Team` and `League`
 models available:
 
