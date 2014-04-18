@@ -97,6 +97,10 @@ def scrape_all():
     """Updates data for every table"""
     leagues = League.query.all()
 
+    if not leagues:
+        add_from_json()
+        leagues = League.query.all()
+
     for league in leagues:
         scrape_table(league)
 
