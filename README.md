@@ -1,6 +1,6 @@
 #Cann Tables
 
-![Screenshot]()
+![Screenshot](http://i.imgur.com/ndHhPAX.png)
 
 A small flask application that displays football tables in a Cann format.
 
