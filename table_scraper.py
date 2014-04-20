@@ -65,7 +65,6 @@ def scrape_table(league):
     league.last_updated = now
     league.max_points = max_points
 
-
     max_played = 0
 
     for index, _ in enumerate(results["position"]):
