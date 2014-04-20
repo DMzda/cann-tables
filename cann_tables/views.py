@@ -7,7 +7,7 @@ import datetime
 @app.route("/")
 @app.route("/index/")
 def index():
-    leagues = models.League.query.all()
+    leagues = models.League.query.order_by(models.League.id).all()
     data = {}
     for league in leagues:
         league.last_updated = datetime.datetime.strftime(league.last_updated, "%a %d/%m/%Y %I:%M %p GMT")
