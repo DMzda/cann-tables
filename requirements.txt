@@ -14,3 +14,4 @@ gunicorn==18.0
 itsdangerous==0.24
 lxml==3.3.4
 requests==2.2.1
+psycopg2==2.5.2
