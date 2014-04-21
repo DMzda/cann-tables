@@ -30,5 +30,17 @@ models available:
     python manage.py shell
 
 
+##Deployment
+You can deploy this app using dokku or heroku (untested):
+
+- Push this repo to your dokku/heroku instance
+- Set the `CANN_ENV` enviroment variable to `"prod"`
+- Setup a Postgresql server
+- Run the scrape command inside the instance:
+
+    python manage.py scrape
+
+
+
 ---
 Licensed under GPL v3
