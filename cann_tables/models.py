@@ -29,3 +29,26 @@ class League(db.Model):
 
     def __repr__(self):
         return "<League(id={}, name={}>".format(self.id, self.name)
+
+
+class User(db.Model):
+    __tablename__ = "users"
+
+    id = db.Column(db.Integer, primary_key=True)
+    username = db.Column(db.String, unique=True)
+    password = db.Column(db.String)
+
+    def is_authenticated(self):
+        return True
+
+    def is_active(self):
+        return True
+
+    def is_anonymous(self):
+        return False
+
+    def get_id(self):
+        return str(self.id)
+
+    def __repr__(self):
+        return "<User(username={})>".format(self.username)
