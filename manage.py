@@ -1,9 +1,9 @@
-from flask_script import Manager, Server, Shell, Command
+from flask_script import Manager, Server, Shell
 from flask_migrate import MigrateCommand
 
-from cann_tables import app, db, utils
+from cann_tables import app, db, utils, scraper
 from cann_tables.models import Team, League
-import table_scraper
+
 
 manager = Manager(app)
 
@@ -15,7 +15,7 @@ def _make_context():
 @manager.command
 def scrape():
     """Run scraper"""
-    table_scraper.scrape_all()
+    scraper.scrape_all()
 
 
 @manager.command
