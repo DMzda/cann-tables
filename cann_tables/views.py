@@ -1,6 +1,10 @@
-from cann_tables import app, models, login_manager, forms
-from flask import render_template, flash, redirect, g, url_for
-from flask_login import login_required
+from cann_tables import app, login_manager, forms
+from cann_tables.models import League, User
+from cann_tables.utils import passwd_context
+from cann_tables.scraper import scrape_all
+
+from flask import render_template, flash, redirect, g, url_for, request
+from flask_login import login_required, current_user, login_user, logout_user
 
 import datetime
 
@@ -8,7 +12,7 @@ import datetime
 @app.route("/")
 @app.route("/index/")
 def index():
-    leagues = models.League.query.order_by(models.League.id).all()
+    leagues = League.query.order_by(League.id).all()
     data = {}
     for league in leagues:
         league.last_updated = datetime.datetime.strftime(league.last_updated, "%a %d/%m/%Y %I:%M %p GMT")
@@ -26,7 +30,12 @@ def index():
 
 @login_manager.user_loader
 def load_user(user_id):
-    return models.User.query.get(int(user_id))
+    return User.query.get(int(user_id))
+
+
+@app.before_request
+def before_request():
+    g.user = current_user
 
 
 @app.route("/login/", methods=["GET", "POST"])
@@ -37,18 +46,29 @@ def login():
     form = forms.LoginForm()
 
     if form.validate_on_submit():
-        flash("Login: Username:{}, Remember me:{}".format(form.username.data, form.remember_me.data), category="info")
-        #return redirect("/admin/")
+        user = User.query.filter(User.username == form.username.data).first()
+
+        if user:
+            if passwd_context.verify(form.password.data, user.password):
+                login_user(user, remember=form.remember_me.data)
+                return redirect(url_for("admin"))
+
+        flash("Invalid username or password", category="danger")
 
     return render_template("login.html", form=form)
 
 
 @app.route("/logout/", methods=["GET", "POST"])
 def logout():
-    pass
+    logout_user()
+    return redirect(url_for("index"))
 
 
-@login_required
 @app.route("/admin/", methods=["GET", "POST"])
+@login_required
 def admin():
-    return "a"
+    if request.method == "POST":
+        scrape_all()
+        flash("All tables updated", category="info")
+
+    return render_template("admin.html")

@@ -24,8 +24,7 @@ A small flask application that displays football tables in a Cann format.
 
 		python manage.py freeze
 
-You can also run the following command to get an interactive shell with `app`, `db` and the `Team` and `League`
-models available:
+You can also run the following command to get an interactive shell with `app`, `db` and the `Team`,`League` and `User` models available:
 
     python manage.py shell
 
@@ -40,7 +39,11 @@ You can deploy this app using dokku or heroku (untested):
 
         python manage.py scrape
 
+- Add a user:
 
+        python manage.py add_user
+
+- Go to /login to login and access the admin panel
 
 ---
 Licensed under GPL v3

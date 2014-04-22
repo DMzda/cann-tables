@@ -2,14 +2,14 @@ from flask_script import Manager, Server, Shell
 from flask_migrate import MigrateCommand
 
 from cann_tables import app, db, utils, scraper
-from cann_tables.models import Team, League
+from cann_tables.models import Team, League, User
 
 
 manager = Manager(app)
 
 
 def _make_context():
-    return {"app": app, "db": db, "Team": Team, "League": League}
+    return {"app": app, "db": db, "Team": Team, "League": League, "User": User}
 
 
 @manager.command
