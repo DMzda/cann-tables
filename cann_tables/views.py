@@ -14,22 +14,24 @@ import datetime
 def index():
     leagues = None
     wanted_leagues = None
+    reset = False
     all_leagues = League.query.order_by(League.id).all()
 
-    if request.method == "POST" or "leagues" in request.cookies:
-        if request.form:
-            wanted_leagues = request.form.getlist("league")
-        else:
-            wanted_leagues = request.cookies.get("leagues").split(",")
+    if request.method == "POST":
+        wanted_leagues = request.form.getlist("league")
 
         if request.form.get("reset"):
             leagues = all_leagues
-            wanted_leagues = None
-        elif wanted_leagues:
-            leagues = League.query.filter(League.id.in_(wanted_leagues)).order_by(League.id).all()
-        else:
+            reset = True
+        elif not wanted_leagues:
             # A form could be submitted empty
             flash("Please select your leagues", category="warning")
+
+    if not wanted_leagues and "leagues" in request.cookies:
+        wanted_leagues = request.cookies.get("leagues").split(",")
+
+    if wanted_leagues and not reset:
+        leagues = League.query.filter(League.id.in_(wanted_leagues)).order_by(League.id).all()
 
     if not leagues:
         leagues = all_leagues
@@ -47,13 +49,14 @@ def index():
 
     #leagues is used for ordering
     response = make_response(render_template("index.html", all_leagues=all_leagues, leagues=leagues, data=data))
-    if wanted_leagues:
+    if reset:
+        #Delete cookie
+        response.set_cookie("leagues", "", expires=0)
+    elif wanted_leagues:
         #Update/create cookie holding wanted_leagues
         expires = datetime.datetime.utcnow() + datetime.timedelta(days=60)
         response.set_cookie("leagues", ",".join(wanted_leagues), expires=expires)
-    elif "leagues" in request.cookies:
-        #Delete cookie
-        response.set_cookie("leagues", "", expires=0)
+
     return response
 
 
