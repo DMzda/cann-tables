@@ -33,7 +33,7 @@ You can also run the following command to get an interactive shell with `app`, `
 You can deploy this app using dokku or heroku (untested):
 
 - Push this repo to your dokku/heroku instance
-- Set the `CANN_ENV` enviroment variable to `"prod"`
+- Set the `CANN_ENV` enviroment variable to `"prod"`, and set a `SECRET_KEY` environment variable
 - Setup a Postgresql server
 - Run the scrape command inside the instance:
 

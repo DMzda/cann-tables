@@ -2,8 +2,7 @@ import os
 
 APP_ROOT = os.path.dirname(os.path.abspath(__file__))
 
-#TODO: Secret key config
-SECRET_KEY = "this-is-a-secret"
+SECRET_KEY = os.environ.get("SECRET_KEY") or "this-is-a-secret"
 
 if os.environ.get("CANN_ENV") == "prod":
     #Postgresql
