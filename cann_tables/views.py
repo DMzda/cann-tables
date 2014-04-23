@@ -3,16 +3,37 @@ from cann_tables.models import League, User
 from cann_tables.utils import passwd_context
 from cann_tables.scraper import scrape_all
 
-from flask import render_template, flash, redirect, g, url_for, request
+from flask import render_template, flash, redirect, g, url_for, request, make_response
 from flask_login import login_required, current_user, login_user, logout_user
 
 import datetime
 
 
 @app.route("/")
-@app.route("/index/")
+@app.route("/index/", methods=["GET", "POST"])
 def index():
-    leagues = League.query.order_by(League.id).all()
+    leagues = None
+    wanted_leagues = None
+    all_leagues = League.query.order_by(League.id).all()
+
+    if request.method == "POST" or "leagues" in request.cookies:
+        if request.form:
+            wanted_leagues = request.form.getlist("league")
+        else:
+            wanted_leagues = request.cookies.get("leagues").split(",")
+
+        if request.form.get("reset"):
+            leagues = all_leagues
+            wanted_leagues = None
+        elif wanted_leagues:
+            leagues = League.query.filter(League.id.in_(wanted_leagues)).order_by(League.id).all()
+        else:
+            # A form could be submitted empty
+            flash("Please select your leagues", category="warning")
+
+    if not leagues:
+        leagues = all_leagues
+
     data = {}
     for league in leagues:
         league.last_updated = datetime.datetime.strftime(league.last_updated, "%a %d/%m/%Y %I:%M %p GMT")
@@ -25,7 +46,15 @@ def index():
             data[league][team.points].append(team)
 
     #leagues is used for ordering
-    return render_template("index.html", leagues=leagues, data=data)
+    response = make_response(render_template("index.html", all_leagues=all_leagues, leagues=leagues, data=data))
+    if wanted_leagues:
+        #Update/create cookie holding wanted_leagues
+        expires = datetime.datetime.utcnow() + datetime.timedelta(days=60)
+        response.set_cookie("leagues", ",".join(wanted_leagues), expires=expires)
+    elif "leagues" in request.cookies:
+        #Delete cookie
+        response.set_cookie("leagues", "", expires=0)
+    return response
 
 
 @login_manager.user_loader

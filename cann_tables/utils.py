@@ -1,4 +1,3 @@
-#TODO: Implement a utility to allow the creation of a user through manage.py
 from cann_tables import db, models
 from passlib.context import CryptContext
 

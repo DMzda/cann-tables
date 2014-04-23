@@ -4,6 +4,25 @@
 
 {% block content %}
 <div class="container">
+    <h4>Select your leagues:</h4>
+    <form action="{{ url_for("index") }}" method="post">
+        {% for league in all_leagues %}
+        {% if loop.index0 % 4 == 0 %}
+        <div class="row">
+        {% endif %}
+        <div class="col-sm-3">
+        <label>
+            <input type="checkbox"  name="league" value="{{ league.id }}"> {{ league.name }}
+        </label>
+        </div>
+        {% if loop.index % 4 == 0 or loop.last %}
+        </div>
+        {% endif %}
+        {% endfor %}
+        <button type="submit" name="submit" class="btn btn-primary">Filter</button>
+        <button type="submit" name="reset" value="reset" class="btn btn-primary">Reset</button>
+    </form>
+
     {% for league in leagues %}
     {% if loop.index0 % 4 == 0 %}
     <div class="row">
