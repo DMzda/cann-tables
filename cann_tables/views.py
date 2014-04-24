@@ -15,6 +15,7 @@ def index():
     leagues = None
     wanted_leagues = None
     reset = False
+    filter = False
     all_leagues = League.query.order_by(League.id).all()
 
     if request.method == "POST":
@@ -32,6 +33,7 @@ def index():
 
     if wanted_leagues and not reset:
         leagues = League.query.filter(League.id.in_(wanted_leagues)).order_by(League.id).all()
+        filter = True
 
     if not leagues:
         leagues = all_leagues
@@ -48,7 +50,8 @@ def index():
             data[league][team.points].append(team)
 
     #leagues is used for ordering
-    response = make_response(render_template("index.html", all_leagues=all_leagues, leagues=leagues, data=data))
+    response = make_response(render_template("index.html",
+                                             all_leagues=all_leagues, leagues=leagues, data=data, filter=filter))
     if reset:
         #Delete cookie
         response.set_cookie("leagues", "", expires=0)

@@ -4,15 +4,19 @@
 
 {% block content %}
 <div class="container">
-    <h4>Select your leagues:</h4>
-    <form action="{{ url_for("index") }}" method="post">
+    <h4 id="chooseExpand"><a href="#">- Select your leagues:</a></h4>
+    <form action="{{ url_for("index") }}" method="post" id="choose">
         {% for league in all_leagues %}
         {% if loop.index0 % 4 == 0 %}
         <div class="row">
         {% endif %}
         <div class="col-sm-3">
         <label>
+            {% if filter %}
+            <input type="checkbox"  name="league" value="{{ league.id }}" {% if league in leagues %}checked{% endif %}> {{ league.name }}
+            {% else %}
             <input type="checkbox"  name="league" value="{{ league.id }}"> {{ league.name }}
+            {% endif %}
         </label>
         </div>
         {% if loop.index % 4 == 0 or loop.last %}
@@ -23,6 +27,7 @@
         <button type="submit" name="reset" value="reset" class="btn btn-primary">Reset</button>
     </form>
 
+    <div id="tables">
     {% for league in leagues %}
     {% if loop.index0 % 4 == 0 %}
     <div class="row">
@@ -60,5 +65,8 @@
     </div>
     {% endif %}
     {% endfor %}
+    </div>
 </div>
 {% endblock %}
+
+{% block script %}<script src="{{ url_for("static", filename="js/script.js") }}"></script>{% endblock %}
