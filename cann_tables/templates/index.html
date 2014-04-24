@@ -12,7 +12,7 @@
         {% endif %}
         <div class="col-sm-3">
         <label>
-            {% if filter %}
+            {% if filtered %}
             <input type="checkbox"  name="league" value="{{ league.id }}" {% if league in leagues %}checked{% endif %}> {{ league.name }}
             {% else %}
             <input type="checkbox"  name="league" value="{{ league.id }}"> {{ league.name }}
