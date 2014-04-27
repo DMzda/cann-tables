@@ -43,6 +43,10 @@ def add_from_json():
 
 def scrape_table(league):
     """Updates database with latest table data"""
+    if league.games_left == 0:
+        print("{} skipped - End of season".format(league.name))
+        return
+
     url = "http://www.bbc.co.uk/sport/football/tables/partial/{}".format(league.id)
     page = requests.get(url)
     tree = html.fromstring(page.text)
