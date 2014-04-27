@@ -32,7 +32,7 @@ def index():
         wanted_leagues = request.cookies.get("leagues").split(",")
 
     if wanted_leagues and not reset:
-        leagues = League.query.filter(League.id.in_(wanted_leagues)).order_by(League.id).all()
+        leagues = [league for league in all_leagues if str(league.id) in wanted_leagues]
         filtered = True
 
     if not leagues:
