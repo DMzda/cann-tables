@@ -27,6 +27,14 @@ class League(db.Model):
 
     teams = db.relationship("Team", order_by="Team.position", backref=db.backref("league"))
 
+    @property
+    def games_left(self):
+        #Scottish Premier league has a "split" system
+        if self.id == 118996176:
+            return 38 - self.max_played
+        else:
+            return len(self.teams) * 2 - 2 - self.max_played
+
     def __repr__(self):
         return "<League(id={}, name={}>".format(self.id, self.name)
 

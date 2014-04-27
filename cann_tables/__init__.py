@@ -11,5 +11,6 @@ migrate = Migrate(app, db)
 
 login_manager = LoginManager(app)
 login_manager.login_view = "login"
+login_manager.login_message_category = "warning"
 
 from cann_tables import views, models

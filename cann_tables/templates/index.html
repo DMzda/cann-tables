@@ -34,6 +34,15 @@
     {% endif %}
     <div class="col-sm-3">
         <h4>{{ league.name }}</h4>
+        {% set games_left = league.games_left %}
+        {% if games_left > 1 %}
+        <h5>{{ games_left }} games to go</h5>
+        {% elif games_left == 1 %}
+        <h5>{{ games_left }} game to go</h5>
+        {% else %}
+        <h5>End of season</h5>
+        {% endif %}
+
         <table class="table table-hover table-condensed table-striped table-bordered">
             <thead>
                 <tr>
