@@ -13,6 +13,7 @@
         </div>
     </div>
     <form action="{{ url_for("admin") }}" method="post" id="choose">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         {% for league in leagues %}
         {% if loop.index0 % 4 == 0 %}
         <div class="row">

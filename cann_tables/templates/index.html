@@ -6,6 +6,7 @@
 <div class="container">
     <h4 id="chooseExpand"><a href="#">- Select your leagues:</a></h4>
     <form action="{{ url_for("index") }}" method="post" id="choose">
+        <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
         {% for league in all_leagues %}
         {% if loop.index0 % 4 == 0 %}
         <div class="row">
