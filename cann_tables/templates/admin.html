@@ -9,11 +9,25 @@
             <h3>Admin</h3>
         </div>
         <div class="col-sm-4">
-            <h5><a href="{{ url_for("logout") }}">Log out</a></h5>
+            <h5 class="text-right"><a href="{{ url_for("logout") }}">Log out</a></h5>
         </div>
     </div>
-    <form action="{{ url_for("admin") }}" method="post">
-        <button type="submit" class="btn btn-primary">Update tables</button>
+    <form action="{{ url_for("admin") }}" method="post" id="choose">
+        {% for league in leagues %}
+        {% if loop.index0 % 4 == 0 %}
+        <div class="row">
+        {% endif %}
+        <div class="col-sm-3">
+        <label>
+            <input type="checkbox"  name="league" value="{{ league.id }}"> {{ league.name }} - {{ league.games_left }} left
+        </label>
+        </div>
+        {% if loop.index % 4 == 0 or loop.last %}
+        </div>
+        {% endif %}
+        {% endfor %}
+        <button type="submit" name="submit" class="btn btn-primary">Update selected</button>
+        <button type="submit" name="all" value="all" class="btn btn-primary">Update all</button>
     </form>
 </div>
 {% endblock %}

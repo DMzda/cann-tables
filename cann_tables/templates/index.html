@@ -36,9 +36,9 @@
         <h4>{{ league.name }}</h4>
         {% set games_left = league.games_left %}
         {% if games_left > 1 %}
-        <h5>{{ games_left }} games to go</h5>
+        <h5>{{ games_left }} matches left</h5>
         {% elif games_left == 1 %}
-        <h5>{{ games_left }} game to go</h5>
+        <h5>{{ games_left }} match left</h5>
         {% else %}
         <h5>End of season</h5>
         {% endif %}

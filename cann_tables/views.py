@@ -1,7 +1,7 @@
 from cann_tables import app, login_manager, forms
 from cann_tables.models import League, User
 from cann_tables.utils import passwd_context
-from cann_tables.scraper import scrape_all
+from cann_tables.scraper import scrape_all, scrape_table
 
 from flask import render_template, flash, redirect, g, url_for, request, make_response
 from flask_login import login_required, current_user, login_user, logout_user
@@ -102,8 +102,24 @@ def logout():
 @app.route("/admin/", methods=["GET", "POST"])
 @login_required
 def admin():
-    if request.method == "POST":
-        scrape_all()
-        flash("All tables updated", category="info")
+    leagues = League.query.order_by(League.id).all()
 
-    return render_template("admin.html")
+    if request.method == "POST":
+        to_update = request.form.getlist("league")
+
+        if request.form.get("all"):
+            scrape_all()
+            flash("All tables updated", category="info")
+        elif to_update:
+            updated = []
+            for league in leagues:
+                if str(league.id) in to_update:
+                    scrape_table(league)
+                    updated.append(league.name)
+
+            flash("Updated: " + ", ".join(updated), category="info")
+        else:
+            # A form could be submitted empty
+            flash("Please select leagues to update", category="warning")
+
+    return render_template("admin.html", leagues=leagues)
