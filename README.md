@@ -15,14 +15,11 @@ A small flask application that displays football tables in a Cann format.
 
 	    python manage.py db upgrade
 
-- Run the scraper and the flask app:
+- Run the scraper, add a user and run the flask app:
 
 		python manage.py scrape
+		python manage.py add_user
 		python manage.py runserver
-
-- Run the `freeze` command to produce the .html files:
-
-		python manage.py freeze
 
 You can also run the following command to get an interactive shell with `app`, `db` and the `Team`,`League` and `User` models available:
 
