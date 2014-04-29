@@ -1,8 +1,8 @@
 #Cann Tables
 
-![Screenshot](http://i.imgur.com/ndHhPAX.png)
+A small flask application that displays football tables in a Cann format, currently hosted [here](http://cann.dmzda.co.uk/).
 
-A small flask application that displays football tables in a Cann format.
+![Screenshot](http://i.imgur.com/yd9CezY.png)
 
 ##Installation
 - Clone this git repo
